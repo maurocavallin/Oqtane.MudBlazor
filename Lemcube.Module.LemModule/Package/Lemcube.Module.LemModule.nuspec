@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Lemcube.Module.LemModule</id>
+    <version>1.0.0</version>
+    <authors>Lemcube</authors>
+    <owners>Lemcube</owners>
+    <title>LemModule</title>
+    <description>ssss</description>
+    <copyright>Lemcube</copyright>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/oqtane/oqtane.framework</projectUrl>
+    <icon>icon.png</icon>
+    <tags>oqtane module</tags>
+    <releaseNotes></releaseNotes>
+    <summary></summary>
+    <dependencies>
+      <dependency id="Oqtane.Framework" version="5.1.2" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\Client\bin\Release\net8.0\Lemcube.Module.LemModule.Client.Oqtane.dll" target="lib\net8.0" /> 
+    <file src="..\Client\bin\Release\net8.0\Lemcube.Module.LemModule.Client.Oqtane.pdb" target="lib\net8.0" /> 
+    <file src="..\Server\bin\Release\net8.0\Lemcube.Module.LemModule.Server.Oqtane.dll" target="lib\net8.0" /> 
+    <file src="..\Server\bin\Release\net8.0\Lemcube.Module.LemModule.Server.Oqtane.pdb" target="lib\net8.0" /> 
+    <file src="..\Shared\bin\Release\net8.0\Lemcube.Module.LemModule.Shared.Oqtane.dll" target="lib\net8.0" /> 
+    <file src="..\Shared\bin\Release\net8.0\Lemcube.Module.LemModule.Shared.Oqtane.pdb" target="lib\net8.0" /> 
+    <file src="..\Server\wwwroot\**\*.*" target="wwwroot" /> 
+    <file src="icon.png" target="" />
+  </files>
+</package>

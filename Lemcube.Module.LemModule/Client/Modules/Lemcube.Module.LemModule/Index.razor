@@ -1,0 +1,96 @@
+@using Lemcube.Module.LemModule.Services
+@using Lemcube.Module.LemModule.Models 
+
+@namespace Lemcube.Module.LemModule
+@inherits ModuleBase
+@inject ILemModuleService LemModuleService
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<Index> Localizer
+
+
+<MudThemeProvider />
+
+@if (_LemModules == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+    <ActionLink Action="Add" Security="SecurityAccessLevel.Edit" Text="Add LemModule" ResourceKey="Add" />
+    <br />
+    <p>PROVA</p>
+
+    <MudBlazor.MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="button_Click">Prova</MudBlazor.MudButton>
+
+    <br />
+    @if (@_LemModules.Count != 0)
+    {
+        <Pager Items="@_LemModules">
+            <Header>
+            <th style="width: 1px;">&nbsp;@msg</th>
+                <th style="width: 1px;">&nbsp;</th>
+                <th>@Localizer["Name"]</th>
+            </Header>
+            <Row>
+                <td><ActionLink Action="Edit" Parameters="@($"id=" + context.LemModuleId.ToString())" ResourceKey="Edit"  /></td>
+                <td><ActionDialog Header="Delete LemModule" Message="Are You Sure You Wish To Delete This LemModule?" Action="Delete" Security="SecurityAccessLevel.Edit" Class="btn btn-danger" OnClick="@(async () => await Delete(context))" ResourceKey="Delete"  Id="@context.LemModuleId.ToString()" /></td>
+                <td>@context.Name</td>
+            </Row>
+        </Pager>
+    }
+    else
+    {
+        <p>@Localizer["Message.DisplayNone"]</p>
+    }
+}
+
+@code {
+    // uncomment the following line to use Static render mode for this component
+    // public override string RenderMode => RenderModes.Static;
+
+    public override List<Resource> Resources => new List<Resource>()
+    {
+        new Resource { ResourceType = ResourceType.Stylesheet, Url = ModulePath() + "Module.css" },
+        new Resource { ResourceType = ResourceType.Script, Url = ModulePath() + "Module.js" }
+    };
+
+    List<LemModule> _LemModules;
+
+    private string msg = "Prova";  
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            MudBlazor.Button button = new MudBlazor.Button();
+            _LemModules = await LemModuleService.GetLemModulesAsync(ModuleState.ModuleId);
+        }
+        catch (Exception ex)
+        {
+            await logger.LogError(ex, "Error Loading LemModule {Error}", ex.Message);
+            AddModuleMessage(Localizer["Message.LoadError"], MessageType.Error);
+        }
+    }
+
+    private async Task Delete(LemModule LemModule)
+    {
+        try
+        {
+            await LemModuleService.DeleteLemModuleAsync(LemModule.LemModuleId, ModuleState.ModuleId);
+            await logger.LogInformation("LemModule Deleted {LemModule}", LemModule);
+            _LemModules = await LemModuleService.GetLemModulesAsync(ModuleState.ModuleId);
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            await logger.LogError(ex, "Error Deleting LemModule {LemModule} {Error}", LemModule, ex.Message);
+            AddModuleMessage(Localizer["Message.DeleteError"], MessageType.Error);
+        }
+    }
+
+    private async void button_Click()
+    {
+        msg = DateTime.Now.Second.ToString();
+    }   
+}
